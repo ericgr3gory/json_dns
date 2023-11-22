@@ -2,27 +2,20 @@ import json
 d=[]
 with open('/home/ericgr3gory/dns_query_logs.json', 'r') as dns_log:
     dns = dns_log.read()
-safe_sites = ["google", "bing", "tiktok", "roblox", "adguard-dns.com", "microsoft", "epicgames", "spotify"]
 sites = []
 dns = dns.split('\n')
 for line in dns:
     j = json.loads(line)
-    sites.append(j['domain'])
+    sites.append(j)
 
-site_set = set(sites)
-
-print(f'list = {len(sites)}')
-print(f'set = {len(site_set)}')
-
-site_list = list(site_set)
 www_list = []
-for l in site_list:
-    if "www" in l:
-        www_list.append(l)
-        print(l)
+for line in sites:
 
-print(len(www_list))
+    if "2023-11-21" in line['time_iso'] and "www" in line["domain"]:
+        www_list.append(line["domain"])
 
-for line in dns:
-    j = json.loads(line)
-    print((j['time_iso']))
+
+www_list = list(set(www_list))
+
+for www in www_list:
+    print(www)
